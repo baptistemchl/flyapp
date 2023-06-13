@@ -4,6 +4,7 @@ import OtherScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -17,22 +18,32 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.fly_app.R
+import com.android.composegeomarker.utils.locationFlow
 import com.example.fly_app.screens.flight.FlightScreen
+import com.example.fly_app.screens.flight.FlightViewModel
 import com.example.fly_app.screens.fly.FlyScreen
 import com.example.fly_app.screens.home.HomeScreen
 import com.example.fly_app.ui.BottomNavItem
 import com.example.fly_app.ui.theme.Fly_appTheme
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {  private val fusedLocationClient: FusedLocationProviderClient by lazy {
+    LocationServices.getFusedLocationProviderClient(this)
+}
+    private val flightViewModel: FlightViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -43,6 +54,17 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     MainScreenView()
+                }
+            }
+        }
+    }
+    private fun fetchLocationUpdates() {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                fusedLocationClient.locationFlow().collect {
+                    it?.let { location ->
+                        flightViewModel.setCurrentLatLng(LatLng(location.latitude, location.longitude))
+                    }
                 }
             }
         }
@@ -120,4 +142,3 @@ fun MainScreenView() {
         NavigationGraph(navController = navController)
     }
 }
-

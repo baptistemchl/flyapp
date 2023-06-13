@@ -8,4 +8,5 @@ sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:Stri
     object Fly : BottomNavItem("Fly", R.drawable.ic_fly, "fly")
     object Flight : BottomNavItem("Flight", R.drawable.ic_flight, "flight")
     object Other : BottomNavItem("Other", R.drawable.ic_other,"other")
+    object Map : BottomNavItem("Map", R.drawable.ic_other,"map")
 }
