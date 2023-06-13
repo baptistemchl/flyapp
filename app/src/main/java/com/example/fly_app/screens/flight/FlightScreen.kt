@@ -1,45 +1,52 @@
 package com.example.fly_app.screens.flight
 
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import android.Manifest
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.fly_app.widgets.LocationPermissionDialog
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-
-import com.google.android.libraries.maps.MapView
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.rememberCameraPositionState
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun FlightScreen(viewModel: FlightViewModel = viewModel()) {
-
+    val navController = rememberNavController()
     val currentLocation by viewModel.currentLatLng.collectAsState()
+    val permissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(currentLocation, 16f)
     }
-                GoogleMap(
-                    modifier = Modifier.fillMaxSize(),
-                    cameraPositionState = cameraPositionState,
-                    onMapClick = {
-                    }
-                ) {
-                }
+
+    LocationPermissionDialog(
+        showDialog = !permissionState.hasPermission,
+        onPermissionRequested = {
+            permissionState.launchPermissionRequest()
+        },
+        onDismiss = {
+            navController.popBackStack()
+        }
+    )
+
+    if (permissionState.hasPermission) {
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState,
+            onMapClick = {
+                // Gérer le clic sur la carte
+            }
+        )
+    }
 }
+
 
 @Preview
 @Composable
