@@ -1,6 +1,6 @@
 package com.example.fly_app
 
-import OtherScreen
+import AirportScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,21 +28,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.android.composegeomarker.utils.locationFlow
 import com.example.fly_app.screens.flight.FlightScreen
 import com.example.fly_app.screens.flight.FlightViewModel
 import com.example.fly_app.screens.fly.FlyScreen
 import com.example.fly_app.screens.home.HomeScreen
+import com.example.fly_app.data.service.ApiService
 import com.example.fly_app.ui.BottomNavItem
 import com.example.fly_app.ui.theme.Fly_appTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
+import locationFlow
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : ComponentActivity() {  private val fusedLocationClient: FusedLocationProviderClient by lazy {
-    LocationServices.getFusedLocationProviderClient(this)
-}
+class MainActivity : ComponentActivity() {
+    private val fusedLocationClient: FusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(this)
+    }
     private val flightViewModel: FlightViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,17 +62,6 @@ class MainActivity : ComponentActivity() {  private val fusedLocationClient: Fus
             }
         }
     }
-    private fun fetchLocationUpdates() {
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                fusedLocationClient.locationFlow().collect {
-                    it?.let { location ->
-                        flightViewModel.setCurrentLatLng(LatLng(location.latitude, location.longitude))
-                    }
-                }
-            }
-        }
-    }
 }
 
 @Composable
@@ -77,14 +70,14 @@ fun NavigationGraph(navController: NavHostController) {
         composable(BottomNavItem.Home.screen_route) {
             HomeScreen()
         }
-        composable(BottomNavItem.Fly.screen_route){
+        composable(BottomNavItem.Fly.screen_route) {
             FlyScreen()
         }
-        composable(BottomNavItem.Flight.screen_route){
+        composable(BottomNavItem.Flight.screen_route) {
             FlightScreen()
         }
-        composable(BottomNavItem.Other.screen_route){
-            OtherScreen()
+        composable(BottomNavItem.Airport.screen_route) {
+            AirportScreen()
         }
     }
 }
@@ -95,7 +88,7 @@ fun BottomNavigationComposant(navController: NavController) {
         BottomNavItem.Home,
         BottomNavItem.Fly,
         BottomNavItem.Flight,
-        BottomNavItem.Other,
+        BottomNavItem.Airport,
     )
     BottomNavigation(
         backgroundColor = colorResource(id = R.color.teal_200),

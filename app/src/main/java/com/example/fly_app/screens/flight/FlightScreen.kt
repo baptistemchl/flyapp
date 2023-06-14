@@ -41,7 +41,7 @@ fun FlightScreen(viewModel: FlightViewModel = viewModel()) {
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
             onMapClick = {
-                // Gérer le clic sur la carte
+
             }
         )
     }

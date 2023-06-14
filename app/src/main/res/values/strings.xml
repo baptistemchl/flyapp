@@ -3,4 +3,5 @@
     <string name="permission_location_rationale">This app requires location access to provide accurate results.</string>
     <string name="maps_api_key">AIzaSyDxyb9MoHaZzOrABD9AHuhsqZiMI2Ev6pA</string>
     <string name="flights_api_key">1911af83-4a14-4156-9038-a7bca843dcf3</string>
+    <string name="flights_base_url">https://airlabs.co/api/v9/</string>
 </resources>
