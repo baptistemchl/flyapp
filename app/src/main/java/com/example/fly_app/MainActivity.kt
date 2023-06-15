@@ -5,7 +5,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.LocalContentColor
@@ -15,13 +20,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -45,22 +53,83 @@ class MainActivity : ComponentActivity() {
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomNavigationComponent(navController = navController) }
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color(0xFFF5F5DC)
     ) {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color(0xFFF5F5DC) // Utilise la couleur beige comme fond
-        ) {
-            NavigationGraph(navController = navController)
+        Column(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.weight(1f)) {
+                NavigationGraph(navController = navController)
+            }
+
+            BottomAppBarComponent(navController = navController)
         }
     }
 }
 
+
+
+@Composable
+fun BottomAppBarComponent(navController: NavHostController) {
+    val bottomNavItems = listOf(
+        BottomNavItem.Home,
+        BottomNavItem.Fly,
+        BottomNavItem.Flight,
+        BottomNavItem.Airport
+    )
+
+    BottomAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        backgroundColor = Color(0xFF800000), // Couleur bordeaux
+    ) {
+        val currentRoute = navController.currentBackStackEntry?.destination?.route
+        CompositionLocalProvider(LocalContentColor provides Color.White) {
+            bottomNavItems.forEach { navItem ->
+                val selected = currentRoute == navItem.screen_route
+                val iconTint = if (selected) {
+                    Color.Black // Icône noire
+                } else {
+                    Color.Black.copy(alpha = 0.4f) // Icône noire transparente
+                }
+                val labelColor = if (selected) {
+                    Color(0xFF808080)
+                    // Couleur grise pour le label sélectionné
+                } else {
+                    Color(0xFFF5F5DC)
+                    // Couleur beige pour le label non sélectionné
+                }
+
+                BottomNavigationItem(
+                    icon = {
+                        Icon(
+                            painterResource(id = navItem.icon),
+                            contentDescription = navItem.title,
+                            tint = iconTint
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = navItem.title,
+                            fontSize = 9.sp,
+                            color = labelColor
+                        )
+                    },
+                    selected = selected,
+                    onClick = {
+                        navController.navigate(navItem.screen_route) {
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
@@ -79,61 +148,3 @@ fun NavigationGraph(navController: NavHostController) {
         }
     }
 }
-
-@Composable
-fun BottomNavigationComponent(navController: NavHostController) {
-    val items = listOf(
-        BottomNavItem.Home,
-        BottomNavItem.Fly,
-        BottomNavItem.Flight,
-        BottomNavItem.Airport,
-    )
-    BottomNavigation(
-        backgroundColor = colorResource(id = R.color.bordeaux),
-        contentColor = colorResource(id = R.color.black),
-        elevation = 10.dp // Supprime l'ombre en définissant l'élévation à 0dp
-    ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-        items.forEach { item ->
-            BottomNavigationItem(
-                icon = {
-                    Icon(
-                        painterResource(id = item.icon),
-                        contentDescription = item.title,
-                        tint = if (currentRoute == item.screen_route) {
-                            LocalContentColor.current
-                        } else {
-                            LocalContentColor.current.copy(alpha = 0.4f)
-                        }
-                    )
-                },
-                label = {
-                    val textColor = if (currentRoute == item.screen_route) {
-                        Color(0xFFF5F5DC) /// Couleur grise pour le label sélectionné
-                    } else {
-                        Color(0xFF808080) //
-                        // Couleur beige pour le label non sélectionné
-                    }
-                    Text(
-                        text = item.title,
-                        fontSize = 9.sp,
-                        color = textColor
-                    )
-                },
-                selected = currentRoute == item.screen_route,
-                onClick = {
-                    navController.navigate(item.screen_route) {
-                        popUpTo(navController.graph.startDestinationRoute!!) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            )
-        }
-    }
-}
-
-
