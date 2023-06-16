@@ -1,6 +1,7 @@
 package com.example.fly_app
 
 import AirportScreen
+import ScheduleScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -31,10 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.fly_app.screens.flight.FlightScreen
 import com.example.fly_app.screens.fly.FlyScreen
 import com.example.fly_app.screens.home.HomeScreen
@@ -144,7 +147,14 @@ fun NavigationGraph(navController: NavHostController) {
             FlightScreen()
         }
         composable(BottomNavItem.Airport.screen_route) {
-            AirportScreen()
+            AirportScreen(navController = navController)
+        }
+        composable(
+            route = "schedule/{iataCode}",
+            arguments = listOf(navArgument("iataCode") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val iataCode = backStackEntry.arguments?.getString("iataCode")
+            ScheduleScreen(iataCode = iataCode!!)
         }
     }
 }

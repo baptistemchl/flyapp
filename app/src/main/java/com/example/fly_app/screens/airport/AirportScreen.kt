@@ -40,11 +40,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.fly_app.R
 import com.example.fly_app.screens.airport.AirportViewModel
 
 @Composable
-fun AirportScreen(airportViewModel: AirportViewModel = viewModel()) {
+fun AirportScreen(airportViewModel: AirportViewModel = viewModel(), navController: NavController,) {
     val airportDataList by airportViewModel.airportDataList.collectAsState()
 
     LaunchedEffect(key1 = airportViewModel) {
@@ -74,7 +75,9 @@ fun AirportScreen(airportViewModel: AirportViewModel = viewModel()) {
                                 .padding(bottom = 16.dp)
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(color = Color.White)
-                                .clickable { /* Action on airport card click */ }
+                                .clickable {
+                                    navController.navigate("schedule/${airport.iataCode}")
+                                }
                                 .padding(16.dp)
                         ) {
                             airport.name?.let {
@@ -208,8 +211,3 @@ fun SpinningIndicator() {
 }
 
 
-@Preview
-@Composable
-fun AirportScreenPreview() {
-    AirportScreen()
-}
