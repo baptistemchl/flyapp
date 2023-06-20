@@ -1,13 +1,9 @@
 package com.example.fly_app.usecases
 
-import AirportData
 import FlightData
 import com.example.fly_app.BuildConfig
-import com.example.fly_app.data.model.AirportsListData
 import com.example.fly_app.data.model.FlightsListData
-import com.example.fly_app.repositories.AirportRepository
 import com.example.fly_app.repositories.FlightRepository
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

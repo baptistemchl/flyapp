@@ -1,12 +1,9 @@
 package com.example.fly_app.usecases
 
-import AirportData
 import com.example.fly_app.BuildConfig
 import com.example.fly_app.data.model.AirlineData
 import com.example.fly_app.data.model.AirlinesListData
-import com.example.fly_app.data.model.AirportsListData
 import com.example.fly_app.repositories.AirlineRepository
-import com.example.fly_app.repositories.AirportRepository
 
 class GetAirlineListUseCase {
     private val airlineRepository = AirlineRepository()
