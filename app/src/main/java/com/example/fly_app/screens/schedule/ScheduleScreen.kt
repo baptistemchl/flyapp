@@ -1,6 +1,8 @@
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,10 +22,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduleScreen(
@@ -55,22 +63,60 @@ fun ScheduleScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                 ) {
-                    items(visibleRows) { scheduleData ->
-                        Card(
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            shape = RoundedCornerShape(8.dp)
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp)
-                            ) {
-                                Text(
-                                    text = scheduleData.flight_iata,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                                // Add other information related to the flight
+                            Text("Time", fontWeight = FontWeight.Bold)
+                            Text("Flight", fontWeight = FontWeight.Bold)
+                            Text("Destination", fontWeight = FontWeight.Bold)
+                            Text("Status", fontWeight = FontWeight.Bold)
+                        }
+                    }
+
+                    items(visibleRows) { scheduleData ->
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            val arrTime = scheduleData.arr_time_utc?.format(DateTimeFormatter.ofPattern("HH:mm")).orEmpty()
+                            val arrEstimated = scheduleData.arr_estimated_utc?.format(DateTimeFormatter.ofPattern("HH:mm")).orEmpty()
+
+                            val annotatedString = buildAnnotatedString {
+                                if (arrTime != arrEstimated) {
+                                    withStyle(
+                                        style = SpanStyle(
+                                            textDecoration = TextDecoration.LineThrough,
+                                            color = Color.Red
+                                        )
+                                    ) {
+                                        append(arrEstimated)
+                                    }
+                                } else {
+                                    withStyle(style = SpanStyle(color = Color.Black)) {
+                                        append(arrTime)
+                                    }
+                                }
                             }
+
+                            Text(
+                                text = annotatedString,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = arrTime,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = scheduleData.flight_iata.orEmpty(),
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = scheduleData.arr_icao.orEmpty(),
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = scheduleData.status.orEmpty(),
+                                modifier = Modifier.weight(1f)
+                            )
                         }
                     }
                 }
@@ -91,5 +137,7 @@ fun ScheduleScreen(
         }
     }
 }
+
+
 
 

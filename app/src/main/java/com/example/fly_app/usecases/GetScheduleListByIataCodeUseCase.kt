@@ -26,15 +26,6 @@ class GetScheduleListByIataCodeUseCase {
 
 
     private fun convertToScheduleDataList(schedulesList: SchedulesListData?): List<ScheduleData> {
-        return schedulesList?.response?.map { schedule ->
-            ScheduleData(
-                flight_iata = schedule.flight_iata,
-                flight_icao = schedule.flight_icao,
-                dep_iata = schedule.dep_iata,
-                dep_icao = schedule.dep_icao,
-                arr_iata = schedule.arr_iata,
-                arr_icao = schedule.arr_icao
-            )
-        } ?: emptyList()
+        return schedulesList?.response?:emptyList()
     }
 }
