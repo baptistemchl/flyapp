@@ -15,9 +15,9 @@ class ScheduleRepository {
     private val retrofit: Retrofit = ApiServiceBuilder.retrofit
     private val apiService: ScheduleApiService = retrofit.create(ScheduleApiService::class.java)
 
-    suspend fun getSchedulesByIataCode(apiKey: String, iataCode: String): SchedulesListData? {
+    suspend fun getSchedulesByIataCode(apiKey: String, dep_iata: String): SchedulesListData? {
         return try {
-            apiService.getSchedulesByIataCode(apiKey, iataCode)
+            apiService.getSchedulesByIataCode(apiKey, dep_iata)
         } catch (e: Exception) {
             e.printStackTrace()
             null

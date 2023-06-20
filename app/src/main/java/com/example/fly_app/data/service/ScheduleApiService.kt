@@ -8,7 +8,7 @@ interface ScheduleApiService {
     @GET("schedules")
     suspend fun getSchedulesByIataCode(
         @Query("api_key") apiKey: String,
-        @Query("iata_code") iataCode: String
+        @Query("dep_iata") dep_iata: String
     ): SchedulesListData
 }
 

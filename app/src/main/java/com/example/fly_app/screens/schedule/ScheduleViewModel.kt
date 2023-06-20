@@ -15,6 +15,7 @@ class ScheduleViewModel : ViewModel() {
     val scheduleDataList: StateFlow<List<ScheduleData>> = _scheduleDataList
 
     private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     private val getScheduleListByIataCodeUseCase = GetScheduleListByIataCodeUseCase()
     private val ioDispatcher = Dispatchers.IO
@@ -37,8 +38,4 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 }
-
-
-
-
 
