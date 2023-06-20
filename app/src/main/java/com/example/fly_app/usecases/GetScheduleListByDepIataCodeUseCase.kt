@@ -7,7 +7,7 @@ import com.example.fly_app.repositories.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class GetScheduleListByIataCodeUseCase {
+class GetScheduleListByDepIataCodeUseCase {
     private val scheduleRepository = ScheduleRepository()
 
 
@@ -15,7 +15,7 @@ class GetScheduleListByIataCodeUseCase {
         return withContext(Dispatchers.IO) {
             try {
                 val apiKey = BuildConfig.AIRPORT_API_KEY
-                val schedulesList = scheduleRepository.getSchedulesByIataCode(apiKey, iataCode)
+                val schedulesList = scheduleRepository.getSchedulesByDepIataCode(apiKey, iataCode)
                 convertToScheduleDataList(schedulesList)
             } catch (e: Exception) {
                 e.printStackTrace()

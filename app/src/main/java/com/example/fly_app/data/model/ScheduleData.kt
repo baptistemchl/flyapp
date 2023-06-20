@@ -12,6 +12,4 @@ data class ScheduleData(
     val dep_icao: String,
     val arr_iata: String,
     val arr_icao: String,
-
-
 )
