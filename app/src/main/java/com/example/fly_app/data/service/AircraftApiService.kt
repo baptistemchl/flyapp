@@ -1,5 +1,6 @@
 package com.example.fly_app.data.service
 
+import com.example.fly_app.data.model.AircraftData
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -13,7 +14,7 @@ interface AircraftApiService {
         @Path("icao24") icao24: String,
         @Query("withRegistrations") withRegistrations: Boolean = true,
         @Query("withImage") withImage: Boolean = true
-    ): String
+    ): AircraftData
 }
 
 object AircraftApiBuilder {

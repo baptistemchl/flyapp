@@ -13,37 +13,27 @@ import kotlinx.serialization.serializer
 
 
 class AircraftViewModel : ViewModel() {
-    private val _aircraftInfo = MutableStateFlow<String>("")
-    val aircraftInfo: StateFlow<String> = _aircraftInfo
-
+    private val _aircraftInfo = MutableStateFlow<AircraftData?>(null)
+    val aircraftInfo: MutableStateFlow<AircraftData?> = _aircraftInfo
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
     private val getAircraftInfoUseCase = GetAircraftDetailUseCase()
     private val ioDispatcher = Dispatchers.IO
+
 
     fun fetchAircraftInfo(icao24: String) {
         viewModelScope.launch {
             try {
-                _isLoading.value = true
-
                 val aircraftInfo = withContext(ioDispatcher) {
                     getAircraftInfoUseCase.execute(icao24)
                 }
 
-                if (aircraftInfo != null) {
-                    _aircraftInfo.value = aircraftInfo
-                }
-
-                _isLoading.value = false
+                _aircraftInfo.value = aircraftInfo
             } catch (e: Exception) {
                 e.printStackTrace()
-                _isLoading.value = false
             }
         }
     }
-
-
 }
+
 
 
