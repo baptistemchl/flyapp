@@ -26,6 +26,8 @@ class GetFlightListUseCase {
             FlightData(
                 lat = flight.lat,
                 lng = flight.lng,
+                hex = flight.hex,
+            flight_iata = flight.flight_iata,
             )
         } ?: emptyList()
     }

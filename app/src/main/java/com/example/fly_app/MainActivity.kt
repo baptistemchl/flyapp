@@ -1,5 +1,6 @@
 package com.example.fly_app
 
+import AircraftScreen
 import AirportScreen
 import ScheduleScreen
 import android.annotation.SuppressLint
@@ -134,10 +135,17 @@ fun NavigationGraph(navController: NavHostController) {
             FlyScreen()
         }
         composable(BottomNavItem.Flight.screen_route) {
-            FlightScreen()
+            FlightScreen(navController = navController)
         }
         composable(BottomNavItem.Airport.screen_route) {
             AirportScreen(navController = navController)
+        }
+        composable(
+            route = "aircraft/{icao24}",
+            arguments = listOf(navArgument("icao24") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val icao24 = backStackEntry.arguments?.getString("icao24")
+            AircraftScreen(icao24 = icao24!!)
         }
         composable(
             route = "schedule/{iataCode}",

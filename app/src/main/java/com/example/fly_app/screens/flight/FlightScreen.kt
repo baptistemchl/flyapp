@@ -28,8 +28,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.fly_app.R
+import com.example.fly_app.ui.BottomNavItem
 import com.example.fly_app.widgets.LocationPermissionDialog
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -41,8 +43,7 @@ import com.google.maps.android.compose.MarkerState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun FlightScreen(flightViewModel: FlightViewModel = viewModel()) {
-    val navController = rememberNavController()
+fun FlightScreen(flightViewModel: FlightViewModel = viewModel(), navController: NavController) {
     val permissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
     val flightListData by flightViewModel.flightDataList.collectAsState()
     val visibleFlightCount = remember { mutableStateOf(150) }
@@ -84,12 +85,18 @@ fun FlightScreen(flightViewModel: FlightViewModel = viewModel()) {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     if (areaPoints.isNotEmpty()) {
-                        areaPoints.forEach {
+                        areaPoints.forEach { point ->
                             val airplaneIcon = getAirplaneIcon()
                             val bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(airplaneIcon)
                             Marker(
-                                state = MarkerState(position = it),
-                                icon = bitmapDescriptor
+                                state = MarkerState(position = point),
+                                icon = bitmapDescriptor,
+                                onClick = { marker ->
+                                    val index = areaPoints.indexOf(point)
+                                    val icao = flightListData?.getOrNull(index)?.hex ?: ""
+                                    navController?.navigate("aircraft/${icao}")
+                                    true
+                                }
                             )
                         }
                     }
