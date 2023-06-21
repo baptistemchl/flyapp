@@ -31,12 +31,9 @@ class AircraftViewModel : ViewModel() {
                     getAircraftInfoUseCase.execute(icao24)
                 }
 
-                // Décodage du JSON en objet Kotlin
-                val decodedAircraftInfo = Json.decodeFromString<AircraftData>(serializer(),
-                    aircraftInfo.toString()
-                )
-
-                _aircraftInfo.value = decodedAircraftInfo.toString()
+                if (aircraftInfo != null) {
+                    _aircraftInfo.value = aircraftInfo
+                }
 
                 _isLoading.value = false
             } catch (e: Exception) {
@@ -45,6 +42,7 @@ class AircraftViewModel : ViewModel() {
             }
         }
     }
+
 
 }
 
