@@ -1,8 +1,6 @@
 package com.example.fly_app.usecases
 
 import com.example.fly_app.data.model.AircraftData
-import com.example.fly_app.data.model.AirlineData
-import com.example.fly_app.data.model.AirlinesListData
 import com.example.fly_app.repositories.AircraftRepository
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
