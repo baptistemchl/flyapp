@@ -24,7 +24,7 @@ fun AircraftScreen(
     }
 
     Column(Modifier.fillMaxSize()) {
-        Text(text = aircraftDetailData)
+        Text(text = aircraftDetailData?.airlineName.orEmpty())
     }
 }
 
