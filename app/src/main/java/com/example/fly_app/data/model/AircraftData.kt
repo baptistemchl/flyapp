@@ -13,4 +13,4 @@ data class AircraftData(
     val engineType:String?,
     val productionLine:String?,
     val ageYears:Double?,
-) : Serializable
+)

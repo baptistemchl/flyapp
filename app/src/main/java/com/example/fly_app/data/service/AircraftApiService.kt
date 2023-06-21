@@ -3,7 +3,7 @@ package com.example.fly_app.data.service
 import com.example.fly_app.data.model.AircraftData
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -32,7 +32,7 @@ object AircraftApiBuilder {
 
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
 
