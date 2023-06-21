@@ -30,7 +30,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fly_app.screens.flight.FlightScreen
-import com.example.fly_app.screens.fly.FlyScreen
 import com.example.fly_app.screens.home.HomeScreen
 import com.example.fly_app.ui.BottomNavItem
 import com.example.fly_app.ui.theme.Fly_appTheme

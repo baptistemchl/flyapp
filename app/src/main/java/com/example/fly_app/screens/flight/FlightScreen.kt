@@ -13,6 +13,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,12 +27,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.fly_app.R
-import com.example.fly_app.ui.BottomNavItem
 import com.example.fly_app.widgets.LocationPermissionDialog
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -70,7 +71,7 @@ fun FlightScreen(flightViewModel: FlightViewModel = viewModel(), navController: 
             if (permissionState.hasPermission) {
                 areaPoints.clear()
 
-                flightListData?.let { data ->
+                flightListData.let { data ->
                     if (data.isNotEmpty()) {
                         data.subList(0, visibleFlightCount.value).forEach { flight ->
                             val point = flight.lat?.let { flight.lng?.let { it1 -> LatLng(it, it1) } }
@@ -93,8 +94,8 @@ fun FlightScreen(flightViewModel: FlightViewModel = viewModel(), navController: 
                                 icon = bitmapDescriptor,
                                 onClick = { marker ->
                                     val index = areaPoints.indexOf(point)
-                                    val icao = flightListData?.getOrNull(index)?.hex ?: ""
-                                    navController?.navigate("aircraft/${icao}")
+                                    val icao = flightListData.getOrNull(index)?.hex ?: ""
+                                    navController.navigate("aircraft/${icao}")
                                     true
                                 }
                             )

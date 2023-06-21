@@ -1,4 +1,3 @@
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -19,7 +17,6 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,10 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
@@ -119,6 +114,7 @@ fun ScheduleScreen(
                     color = MaterialTheme.colors.primary
                 )
             } else {
+//                Départs de l'aeroport choisis
                 if (selectedOption == "departures") {
                     if (scheduleDataList.isNotEmpty()) {
                         val visibleRows = scheduleDataList.subList(0, visibleRowCount * 5)
@@ -196,6 +192,7 @@ fun ScheduleScreen(
                         Text("No data")
                     }
             } else {
+//                Arrivées à l'aeroport choisis
                     if (scheduleDataListByArr.isNotEmpty()) {
                         val visibleRows = scheduleDataListByArr.subList(0, visibleRowCount * 5)
 

@@ -28,7 +28,7 @@ class GetFlightListUseCase {
                 lng = flight.lng,
                 hex = flight.hex,
             flight_iata = flight.flight_iata,
-            )
+            dep_iata = flight.dep_iata)
         } ?: emptyList()
     }
 }

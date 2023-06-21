@@ -1,7 +1,5 @@
 package com.example.fly_app.data.model
 
-import java.io.Serializable
-
 
 data class AircraftData(
     val airlineName : String?,
