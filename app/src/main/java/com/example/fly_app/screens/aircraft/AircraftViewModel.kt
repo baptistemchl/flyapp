@@ -1,12 +1,15 @@
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fly_app.data.model.AircraftData
 import com.example.fly_app.usecases.GetAircraftDetailUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 
 class AircraftViewModel : ViewModel() {
@@ -27,7 +30,13 @@ class AircraftViewModel : ViewModel() {
                 val aircraftInfo = withContext(ioDispatcher) {
                     getAircraftInfoUseCase.execute(icao24)
                 }
-                _aircraftInfo.value = aircraftInfo
+
+                // Décodage du JSON en objet Kotlin
+                val decodedAircraftInfo = Json.decodeFromString<AircraftData>(serializer(),
+                    aircraftInfo.toString()
+                )
+
+                _aircraftInfo.value = decodedAircraftInfo.toString()
 
                 _isLoading.value = false
             } catch (e: Exception) {
@@ -36,6 +45,7 @@ class AircraftViewModel : ViewModel() {
             }
         }
     }
+
 }
 
 

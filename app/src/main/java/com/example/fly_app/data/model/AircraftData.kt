@@ -1,5 +1,7 @@
 package com.example.fly_app.data.model
 
+import kotlinx.serialization.Serializable
+
 data class AircraftData(
     val airlineName : String?,
     val numSeats : Int?,
@@ -10,4 +12,4 @@ data class AircraftData(
     val engineType:String?,
     val productionLine:String?,
     val ageYears:Double?,
-)
+) : Serializable

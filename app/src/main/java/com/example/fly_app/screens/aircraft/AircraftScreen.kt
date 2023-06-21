@@ -24,7 +24,7 @@ fun AircraftScreen(
     }
 
     Column(Modifier.fillMaxSize()) {
-        Text(text = icao24)
+        Text(text = aircraftDetailData)
     }
 }
 
