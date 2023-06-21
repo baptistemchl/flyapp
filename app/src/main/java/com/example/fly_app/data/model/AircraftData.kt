@@ -13,4 +13,6 @@ data class AircraftData(
     val engineType:String?,
     val productionLine:String?,
     val ageYears:Double?,
+    val image:AircraftPictureData?,
+    val hexIcao:String?,
 )

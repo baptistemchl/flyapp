@@ -71,7 +71,7 @@ fun MainScreen() {
 fun BottomAppBarComponent(navController: NavHostController) {
     val bottomNavItems = listOf(
         BottomNavItem.Home,
-        BottomNavItem.Fly,
+//        BottomNavItem.Fly,
         BottomNavItem.Flight,
         BottomNavItem.Airport
     )
@@ -131,9 +131,9 @@ fun NavigationGraph(navController: NavHostController) {
         composable(BottomNavItem.Home.screen_route) {
             HomeScreen()
         }
-        composable(BottomNavItem.Fly.screen_route) {
-            FlyScreen()
-        }
+//        composable(BottomNavItem.Fly.screen_route) {
+//            FlyScreen()
+//        }
         composable(BottomNavItem.Flight.screen_route) {
             FlightScreen(navController = navController)
         }
